@@ -8,7 +8,7 @@ function readJson(name) {
   const fd = fs.openSync(name, 'r');
   try {
     if (!fs.fstatSync(fd).isFile() || fs.fstatSync(fd).size > 10 * 1024 * 1024) {
-      throw new Error(`${name}: use um arquivo JSON de at� 10 MiB.`);
+      throw new Error(`${name}: use um arquivo JSON de até 10 MiB.`);
     }
     return JSON.parse(fs.readFileSync(fd, 'utf-8').replace(/^\uFEFF/, ''));
   } finally {
@@ -23,22 +23,22 @@ function isObject(value) {
 const data = readJson('chapters.json');
 const titles = readJson('chapter_titles.json');
 const book = readJson('book.json');
-if (![data, titles, book].every(isObject)) throw new Error('Os tr�s JSONs devem conter objetos.');
-if (typeof book.title !== 'string' || !book.title.trim()) throw new Error('book.title � obrigat�rio.');
+if (![data, titles, book].every(isObject)) throw new Error('Os três JSONs devem conter objetos.');
+if (typeof book.title !== 'string' || !book.title.trim()) throw new Error('book.title é obrigatório.');
 for (const key of ['title', 'subtitle', 'genre']) {
   if (book[key] !== undefined && (typeof book[key] !== 'string' || book[key].length > 500)) {
-    throw new Error(`book.${key} deve ser um texto de at� 500 caracteres.`);
+    throw new Error(`book.${key} deve ser um texto de até 500 caracteres.`);
   }
 }
 const chapterKeys = Object.keys(data);
-if (!chapterKeys.length || chapterKeys.length > 1000) throw new Error('Use de 1 a 1000 cap�tulos.');
+if (!chapterKeys.length || chapterKeys.length > 1000) throw new Error('Use de 1 a 1000 capítulos.');
 for (const key of chapterKeys) {
   if (!/^ch[1-9]\d{0,5}$/.test(key) || typeof data[key] !== 'string') {
-    throw new Error(`Cap�tulo inv�lido: ${key}. Use ch1, ch2 etc., com conte�do textual.`);
+    throw new Error(`Capítulo inválido: ${key}. Use ch1, ch2 etc., com conteúdo textual.`);
   }
   const number = key.slice(2);
   if (!Object.hasOwn(titles, number) || typeof titles[number] !== 'string' || titles[number].length > 500) {
-    throw new Error(`T�tulo ausente ou inv�lido para o cap�tulo ${number}.`);
+    throw new Error(`Título ausente ou inválido para o capítulo ${number}.`);
   }
 }
 
@@ -105,7 +105,7 @@ function chapterTitle(num, title) {
     new Paragraph({
       alignment: AlignmentType.CENTER,
       spacing: { before: 1200, after: 100 },
-      children: [ new TextRun({ text: `CAP�TULO ${num}`, font: FONT, size: 28, bold: true }) ]
+      children: [ new TextRun({ text: `CAPÍTULO ${num}`, font: FONT, size: 28, bold: true }) ]
     }),
     new Paragraph({
       alignment: AlignmentType.CENTER,
@@ -134,7 +134,7 @@ const titlePage = [
   new Paragraph({
     alignment: AlignmentType.CENTER,
     spacing: { before: 1200 },
-    children: [ new TextRun({ text: `${chapterKeys.length} cap�tulo(s)`, font: FONT, size: 20 }) ]
+    children: [ new TextRun({ text: `${chapterKeys.length} capítulo(s)`, font: FONT, size: 20 }) ]
   }),
   new Paragraph({ children: [ new PageBreak() ] }),
 ];
@@ -174,7 +174,7 @@ Packer.toBuffer(doc).then(buf => {
   console.log('Gerado: Livro.docx');
 }).catch(error => {
   console.error(error.code === 'EEXIST'
-    ? 'Livro.docx j� existe. Mova ou renomeie a sa�da anterior antes de gerar novamente.'
+    ? 'Livro.docx já existe. Mova ou renomeie a saída anterior antes de gerar novamente.'
     : `Falha ao gerar documento: ${error.message}`);
   process.exitCode = 1;
 });
