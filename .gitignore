@@ -1,0 +1,16 @@
+node_modules/
+*.docx
+*.pdf
+*.zip
+*.log
+.env
+.env.*
+*.pem
+*.key
+chapters.json
+chapter_titles.json
+book.json
+Livro.txt
+!exemplo/chapters.json
+!exemplo/chapter_titles.json
+!exemplo/book.json
