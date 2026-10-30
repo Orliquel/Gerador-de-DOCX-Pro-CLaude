@@ -1,0 +1,9 @@
+{
+  "name": "gerador-de-docx-pro-claude",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gerador local de livros DOCX com formata��o liter�ria para uso com Claude.",
+  "engines": { "node": ">=22" },
+  "scripts": { "build": "node build_docx.js" },
+  "dependencies": { "docx": "9.15.0" }
+}
